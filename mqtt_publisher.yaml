@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: go-mqtt-publisher-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: go-mqtt-publisher
+  template:
+    metadata:
+      labels:
+        app: go-mqtt-publisher
+    spec:
+      containers:
+        - name: go-mqtt-publisher
+          image: lakky1/x86_mqtt_publisher
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+      nodeSelector:
+        role: edge_worker
